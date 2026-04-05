@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Yay Checkmate</string>
+    <string name="menu_add_object">Register object</string>
+    <string name="menu_library">Object library</string>
+    <string name="menu_detection">Detection mode</string>
+    <string name="capture">Capture</string>
+    <string name="save_object">Save object</string>
+    <string name="object_name">Name</string>
+    <string name="object_description">Description</string>
+    <string name="object_tags">Tags (optional)</string>
+    <string name="scanning">Scanning…</string>
+    <string name="match_weak">Possible match detected</string>
+    <string name="match_strong">Object found nearby</string>
+    <string name="no_match_signal">No strong signal</string>
+    <string name="toggle_grid">Grid</string>
+    <string name="toggle_list">List</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="start_detection">Find this object</string>
+    <string name="permission_camera_rationale">Camera access is required to capture and scan objects.</string>
+    <string name="permission_location_rationale">Location helps record where the object was last seen.</string>
+    <string name="select_target">Choose object to find</string>
+    <string name="all_objects">All saved objects</string>
+    <string name="confidence_format">Confidence: %1$d%%</string>
+    <string name="distance_hint">Last seen ~%1$s away</string>
+    <string name="direction_left">Try moving camera left</string>
+    <string name="direction_right">Try moving camera right</string>
+    <string name="direction_center">Centered in view</string>
+</resources>
