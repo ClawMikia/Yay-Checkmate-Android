@@ -395,7 +395,7 @@
                 <Button
                     android:id="@+id/btnRegisterFirst"
                     android:layout_width="wrap_content"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:text="Register Your First Object"
                     android:textColor="@color/colorBackground"
                     android:background="@drawable/bg_button_neon"
