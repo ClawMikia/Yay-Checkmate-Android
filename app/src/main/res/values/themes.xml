@@ -17,7 +17,34 @@
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
         <item name="materialButtonStyle">@style/Widget.YayCheckmate.Button</item>
         <item name="textInputStyle">@style/Widget.YayCheckmate.TextInput</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.YayCheckmate.MaterialAlertDialog</item>
+        <item name="snackbarStyle">@style/Widget.YayCheckmate.Snackbar</item>
     </style>
+
+    <style name="ThemeOverlay.YayCheckmate.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorText</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorText</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.YayCheckmate.MediumComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.YayCheckmate.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
+
+    <style name="Widget.YayCheckmate.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@drawable/bg_snackbar</item>
+        <item name="snackbarButtonStyle">@style/Widget.YayCheckmate.Button.TextButton.Snackbar</item>
+        <item name="android:layout_margin">24dp</item>
+    </style>
+
+
+    <style name="Widget.YayCheckmate.Button.TextButton.Snackbar" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 
     <style name="Theme.YayCheckmate.Splash" parent="Theme.YayCheckmate">
         <item name="android:windowFullscreen">true</item>

@@ -105,6 +105,48 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Camera Preview Section -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                android:layout_marginBottom="16dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.camera.view.PreviewView
+                        android:id="@+id/cameraPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_scan_overlay" />
+
+                    <TextView
+                        android:id="@+id/tvCameraHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:text="Align object in center"
+                        android:textColor="@color/colorBackground"
+                        android:textSize="12sp"
+                        android:background="@drawable/bg_difficulty_chip"
+                        android:backgroundTint="#80000000"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp" />
+
+                </FrameLayout>
+
+            </androidx.cardview.widget.CardView>
+
             <!-- Photos section -->
             <LinearLayout
                 android:layout_width="match_parent"

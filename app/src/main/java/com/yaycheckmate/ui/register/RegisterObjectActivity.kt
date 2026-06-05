@@ -8,6 +8,11 @@ import android.widget.AutoCompleteTextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.yaycheckmate.R
 import com.yaycheckmate.YayCheckmateApp
@@ -16,6 +21,8 @@ import com.yaycheckmate.utils.GameConstants
 import com.yaycheckmate.utils.toast
 import com.yaycheckmate.viewmodel.RegisterViewModel
 import com.yaycheckmate.viewmodel.RegisterViewModelFactory
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class RegisterObjectActivity : AppCompatActivity() {
 
@@ -24,6 +31,9 @@ class RegisterObjectActivity : AppCompatActivity() {
     private val viewModel: RegisterViewModel by viewModels {
         RegisterViewModelFactory(application as YayCheckmateApp)
     }
+
+    private var imageCapture: ImageCapture? = null
+    private lateinit var cameraExecutor: ExecutorService
 
     private var currentPhotoAngle = "front"
 
@@ -35,17 +45,8 @@ class RegisterObjectActivity : AppCompatActivity() {
     private val cameraPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
-        if (granted) openCameraForAngle(currentPhotoAngle)
+        if (granted) startCamera()
         else toast("Camera permission needed for photos")
-    }
-
-    private val cameraLauncher = registerForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) { success ->
-        if (success) {
-            updatePhotoUI(currentPhotoAngle)
-            toast("${currentPhotoAngle.replaceFirstChar { it.uppercase() }} photo saved!")
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +60,37 @@ class RegisterObjectActivity : AppCompatActivity() {
         setupPhotoButtons()
         setupSaveButton()
         observeViewModel()
+
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            startCamera()
+        } else {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    private fun startCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener({
+            val cameraProvider = cameraProviderFuture.get()
+            val preview = Preview.Builder().build().also {
+                it.setSurfaceProvider(binding.cameraPreview.surfaceProvider)
+            }
+            imageCapture = ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .build()
+
+            try {
+                cameraProvider.unbindAll()
+                // Force BACK camera only, satisfying "back camera only" requirement
+                cameraProvider.bindToLifecycle(
+                    this, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture
+                )
+            } catch (e: Exception) {
+                toast("Failed to start camera")
+            }
+        }, ContextCompat.getMainExecutor(this))
     }
 
     private fun setupToolbar() {
@@ -95,26 +127,39 @@ class RegisterObjectActivity : AppCompatActivity() {
 
     private fun requestCameraAndCapture(angle: String) {
         currentPhotoAngle = angle
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            openCameraForAngle(angle)
-        } else {
-            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-        }
+        takePhoto(angle)
     }
 
-    private fun openCameraForAngle(angle: String) {
-        val file = com.yaycheckmate.utils.ImageUtils.createImageFile(this, "OBJ_${angle.uppercase()}")
-        val uri = androidx.core.content.FileProvider.getUriForFile(
-            this, "${packageName}.provider", file
-        )
-        when (angle) {
-            "front" -> viewModel.photoFrontPath = file.absolutePath
-            "back" -> viewModel.photoBackPath = file.absolutePath
-            "left" -> viewModel.photoLeftPath = file.absolutePath
-            "right" -> viewModel.photoRightPath = file.absolutePath
-            "top" -> viewModel.photoTopPath = file.absolutePath
+    private fun takePhoto(angle: String) {
+        val imageCapture = imageCapture ?: run {
+            toast("Camera not ready")
+            return
         }
-        cameraLauncher.launch(uri)
+        val file = com.yaycheckmate.utils.ImageUtils.createImageFile(this, "OBJ_${angle.uppercase()}")
+
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(file).build()
+
+        imageCapture.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(this),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    when (angle) {
+                        "front" -> viewModel.photoFrontPath = file.absolutePath
+                        "back" -> viewModel.photoBackPath = file.absolutePath
+                        "left" -> viewModel.photoLeftPath = file.absolutePath
+                        "right" -> viewModel.photoRightPath = file.absolutePath
+                        "top" -> viewModel.photoTopPath = file.absolutePath
+                    }
+                    updatePhotoUI(angle)
+                    toast("${angle.replaceFirstChar { it.uppercase() }} photo saved!")
+                }
+
+                override fun onError(exc: ImageCaptureException) {
+                    toast("Photo capture failed: ${exc.message}")
+                }
+            }
+        )
     }
 
     private fun updatePhotoUI(angle: String) {
@@ -177,5 +222,10 @@ class RegisterObjectActivity : AppCompatActivity() {
                 toast("Failed to register: ${it.message}")
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraExecutor.shutdown()
     }
 }

@@ -9,8 +9,8 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -187,7 +187,7 @@ class SearchActivity : AppCompatActivity() {
             "Office", "Car", "Bag/Backpack", "Coat Pocket",
             "Drawer", "Table", "Sofa", "Shelf", "Other"
         )
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
             .setTitle("Where did you find it?")
             .setItems(locations) { _, which ->
                 viewModel.markFound(locations[which])
@@ -196,7 +196,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showFoundDialog(location: String, duration: Long, xp: Int) {
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
             .setTitle("🎉 Checkmate! Found it!")
             .setMessage("Location: $location\nTime: ${duration.toFormattedDuration()}\n\n+$xp XP earned!")
             .setPositiveButton("Awesome!") { _, _ -> finish() }
