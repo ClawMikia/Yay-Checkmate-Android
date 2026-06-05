@@ -1,10 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#000000</color>
-    <color name="purple_accent">#9900FF</color>
-    <color name="purple_accent_dim">#660099</color>
-    <color name="white">#FFFFFF</color>
-    <color name="text_secondary">#BBBBBB</color>
-    <color name="signal_weak">#66FF9900</color>
-    <color name="signal_strong">#FF9900FF</color>
+    <!-- Primary palette: Alien Cyberpunk -->
+    <color name="colorBackground">#050A0F</color>
+    <color name="colorSurface">#0A1520</color>
+    <color name="colorSurfaceVariant">#0F1E30</color>
+    <color name="colorCard">#0D1A27</color>
+
+    <!-- Neon Cyan primary -->
+    <color name="colorPrimary">#00FFFF</color>
+    <color name="colorPrimaryDark">#00C8C8</color>
+    <color name="colorPrimaryVariant">#00FFFF33</color>
+
+    <!-- Electric Purple secondary -->
+    <color name="colorSecondary">#BF00FF</color>
+    <color name="colorSecondaryDark">#9900CC</color>
+    <color name="colorSecondaryVariant">#BF00FF33</color>
+
+    <!-- Electric Blue accent -->
+    <color name="colorAccent">#0066FF</color>
+    <color name="colorAccentGlow">#0066FF55</color>
+
+    <!-- Status colors -->
+    <color name="colorSuccess">#00FF88</color>
+    <color name="colorWarning">#FFD700</color>
+    <color name="colorError">#FF0055</color>
+
+    <!-- Text -->
+    <color name="colorText">#E8F4FF</color>
+    <color name="colorTextSecondary">#7A9BB5</color>
+    <color name="colorTextMuted">#3D5A73</color>
+
+    <!-- Overlays -->
+    <color name="colorOverlay">#CC050A0F</color>
+    <color name="colorBorder">#1A3550</color>
+
+    <!-- Difficulty colors -->
+    <color name="difficultyEasy">#00FF88</color>
+    <color name="difficultyMedium">#FFD700</color>
+    <color name="difficultyHard">#FF6B35</color>
+    <color name="difficultyVeryHard">#FF0055</color>
+
+    <!-- Bottom nav -->
+    <color name="colorNavBackground">#070D14</color>
+    <color name="colorNavSelected">#00FFFF</color>
+    <color name="colorNavUnselected">#3D5A73</color>
 </resources>
